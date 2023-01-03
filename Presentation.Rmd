@@ -1,0 +1,70 @@
+---
+title: "Presentation"
+author: "JH"
+date: '2023-01-03'
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+This is the presentation for presenting the final data products for the Data Science Capstone.
+
+The originl data is the text data provided by Swiftkey. You can access the data from [here](https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip). The three text files in the en_US folder are used as the data for this project.
+
+The goal of this project is to use the text data as the basis, to create a shiny app that allow the user to input some words and automatically predict the next words. Detailed information can be found on [Coursera](https://www.coursera.org/learn/data-science-project?specialization=jhu-data-science&utm_source=gg&utm_medium=sem&utm_campaign=03-DataScience-JHU-US&utm_content=03-DataScience-JHU-US&campaignid=313639147&adgroupid=121203872804&device=c&keyword=&matchtype=b&network=g&devicemodel=&adpostion=&creativeid=507187136063&hide_mobile_promo&gclid=Cj0KCQjwvaeJBhCvARIsABgTDM4L9NH41XAn2Ef_1zplguykYRFzpAy5sStoHNe7I2GGEnl5jeGkGRwaAgAWEALw_wcB).
+
+## Approaches 
+
+The main r packacge used for cleaning the data is quanteda.
+
+
+<font size="4">**1. Subset the data:** 40% of each text files are randomly sampled.</font>  
+<font size="4">**2. Remove confounded:** Abbreviations like 'm,'t are replaced, and characters other than English removed.</font>  
+<font size="4">**3. Tokenize the data:** Tokenize the data while removing punctuation, numbers, urls, etc.</font>  
+<font size="4">**4. Stem the words:** Words are stemmed to avoid counting same words in different forms in multiple times.</font>  
+<font size="4">**5. Ngrams analysis:** Perform Ngrams calculation and split the words in bigram and trigram for future analysis.</font>  
+<font size="4">**6. Kneser Kny Smoothing:** Use Kneser-Ney smoothing methods to assign the probilities to each unigram, bigrams and trigrams.</font>  
+<font size="4">**7. Predict the words:** Function will search the input in trigrams first then bigrams, if still no matches, one of the top 10 unigrams will be predicted.</font>
+
+
+## Data samples {#slideID}
+<style> 
+  #slideID > p { 
+    margin-top: -30px; 
+  } 
+</style>
+
+<font size="4">The head of the uniwords, biwords and triwords data used in the project is displayed as followed.</font>
+```{r cars, echo = F}
+uni_words <- readRDS(file = "unidata")
+bi_words <- readRDS(file = "bidata")
+tri_words <- readRDS(file = "tridata")
+```
+
+<font size="4">**UniWords**</font>
+```{r,echo=F}
+head(uni_words,2)
+```
+
+<font size="4">**BiWords**</font>
+```{r,echo=F}
+bi_words[5:6,]
+```
+
+<font size="4">**TriWords**</font>
+```{r,echo=F}
+tri_words[100:101,]
+```
+
+## The Shiny APP
+
+The Shiny App can be accessed from [here](https://jliao12.shinyapps.io/NLP_Next_Word_Prediction/).
+
+- Put some words and the results will display automatically.
+- Choose number of outcomes you would like to see.
+- You can view the results is coming from which word set and the other possible outcomes from that data set.
+- When open the link, the results may take a few second to display, thank you for your patience.
